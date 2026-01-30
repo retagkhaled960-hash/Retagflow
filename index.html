@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Style Login</title>
+
+<style>
+:root {
+    --bg: #f1f3f4;
+    --card: #ffffff;
+    --text: #202124;
+    --border: #dadce0;
+    --primary: #1a73e8;
+}
+
+body.dark {
+    --bg: #202124;
+    --card: #2d2e30;
+    --text: #e8eaed;
+    --border: #5f6368;
+    --primary: #8ab4f8;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    transition: 0.3s;
+}
+
+/* ===== Login Card ===== */
+.card {
+    background: var(--card);
+    width: 360px;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: fade 0.8s;
+}
+
+@keyframes fade {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.logo {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.logo span:nth-child(1){color:#4285F4}
+.logo span:nth-child(2){color:#DB4437}
+.logo span:nth-child(3){color:#F4B400}
+.logo span:nth-child(4){color:#4285F4}
+.logo span:nth-child(5){color:#0F9D58}
+.logo span:nth-child(6){color:#DB4437}
+
+h2 {
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 25px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 14px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    outline: none;
+}
+
+label {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--card);
+    padding: 0 5px;
+    color: #777;
+    font-size: 14px;
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+input:focus + label,
+input:not(:placeholder-shown) + label {
+    top: -6px;
+    font-size: 12px;
+    color: var(--primary);
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: var(--primary);
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.toggle {
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* ===== Loader ===== */
+.loader {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+}
+
+.dot:nth-child(2){animation-delay:0.2s}
+.dot:nth-child(3){animation-delay:0.4s}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+/* ===== Home ===== */
+.home {
+    display: none;
+    text-align: center;
+}
+
+.home h1 {
+    margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="login">
+    <div class="logo">
+        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+    </div>
+
+    <h2>تسجيل الدخول</h2>
+
+    <div class="input-group">
+        <input type="email" id="email" placeholder=" " required>
+        <label>البريد الإلكتروني</label>
+    </div>
+
+    <div class="input-group">
+        <input type="password" id="password" placeholder=" " required>
+        <label>كلمة المرور</label>
+    </div>
+
+    <button onclick="login()">التالي</button>
+
+    <div class="loader" id="loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <div class="toggle" onclick="toggleMode()">🌙 / ☀️ تغيير الوضع</div>
+</div>
+
+<div class="card home" id="home">
+    <h1>👋 مرحبًا</h1>
+    <p>تم تسجيل الدخول بنجاح</p>
+    <button onclick="logout()">تسجيل الخروج</button>
+</div>
+
+<script>
+function toggleMode(){
+    document.body.classList.toggle("dark");
+}
+
+function login(){
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const loader = document.getElementById("loader");
+
+    if(email === "user@gmail.com" && password === "123456"){
+        loader.style.display = "flex";
+
+        setTimeout(()=>{
+            document.getElementById("login").style.display = "none";
+            document.getElementById("home").style.display = "block";
+        }, 1500);
+    } else {
+        alert("بيانات غير صحيحة");
+    }
+}
+
+function logout(){
+    document.getElementById("home").style.display = "none";
+    document.getElementById("login").style.display = "block";
+}
+</script>
+
+</body>
+</html>
